@@ -184,24 +184,24 @@ class Sicredi extends AbstractRemessa implements RemessaContract
 
         $this->add(18, 18, '0');
         $this->add(19, 26, '00000000');
-        $this->add(27, 41, Util::formatCnab('9', 0, 13, 2));
+        $this->add(27, 41, Util::formatCnab('9', 0, 15, 2));
         if ($boleto->getDesconto() > 0) {
             $this->add(18, 18, '1'); // '1' = Valor fixo até a data informada
             $this->add(19, 26, $boleto->getDataDesconto() ? $boleto->getDataDesconto()->format('dmY') : $boleto->getDataVencimento()->format('dmY'));
-            $this->add(27, 41, Util::formatCnab('9', $boleto->getMulta(), 13, 2));
+            $this->add(27, 41, Util::formatCnab('9', $boleto->getMulta(), 15, 2));
         }
 
-        $this->add(42, 42, '');
-        $this->add(43, 50, Util::formatCnab('X', '', 8));
-        $this->add(51, 65, Util::formatCnab('x', '', 15));
+        $this->add(42, 42, '0');
+        $this->add(43, 50, Util::formatCnab('9', '0', 8));
+        $this->add(51, 65, Util::formatCnab('9', '0', 15));
         $this->add(66, 66, '0');
         $this->add(67, 74, '00000000');
-        $this->add(75, 89, Util::formatCnab('9', 0, 13, 2));
+        $this->add(75, 89, Util::formatCnab('9', 0, 15, 2));
         if ($boleto->getMulta() > 0) {
             $percentualMulta = number_format((($boleto->getMulta() * 100) / $boleto->getValor()), 2);
             $this->add(66, 66, '2'); // '2' = Percentual
             $this->add(67, 74, $boleto->getDataVencimento()->format('dmY'));
-            $this->add(75, 89, Util::formatCnab('9', $percentualMulta, 13, 2));
+            $this->add(75, 89, Util::formatCnab('9', $percentualMulta, 15, 2));
         }
         $this->add(90, 99, Util::formatCnab('X', '', 10));
         $this->add(100, 139, Util::formatCnab('X', '', 40));
